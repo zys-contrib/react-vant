@@ -1,1 +1,1 @@
-import './base.less';
+import './style/index.less';
