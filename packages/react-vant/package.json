@@ -48,6 +48,7 @@
     "changelog": "react-vant-cli changelog",
     "create-component": "react-vant-cli create-component",
     "postcreate-component": "yarn prettier",
+    "prepublish": "yarn build",
     "prepack": "yarn build",
     "prettier": "npx prettier --write vant.config.js src/index.ts",
     "release": "pnpm publish --tag next",
