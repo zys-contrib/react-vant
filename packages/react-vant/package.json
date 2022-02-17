@@ -27,21 +27,20 @@
   "sideEffects": [
     "**/*.css",
     "**/*.less",
-    "./es/index.js",
+    "./dist/es/index.js",
     "./src/index.ts",
-    "./es/styles/index.js",
+    "./dist/es/styles/index.js",
     "./src/styles/index.ts"
   ],
-  "main": "./lib/index.js",
-  "jsdelivr": "./lib/react-vant.min.js",
-  "unpkg": "./lib/react-vant.min.js",
-  "module": "./es/index.js",
-  "types": "./es/index.d.ts",
-  "typings": "./es/index.d.ts",
+  "main": "./dist/lib/react-vant.cjs.js",
+  "jsdelivr": "./dist/lib/react-vant.min.js",
+  "unpkg": "./dist/lib/react-vant.min.js",
+  "module": "./dist/es/index.js",
+  "types": "./dist/es/index.d.ts",
+  "typings": "./dist/es/index.d.ts",
+  "style": "./dist/lib/index.css",
   "files": [
-    "lib",
-    "es",
-    "2x"
+    "dist"
   ],
   "scripts": {
     "build": "react-vant-cli build",

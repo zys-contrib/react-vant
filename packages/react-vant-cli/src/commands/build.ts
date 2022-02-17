@@ -53,32 +53,6 @@ async function compileFile(filePath: string) {
   return Promise.resolve();
 }
 
-/**
- * Pre-compile
- * 1. Remove unneeded dirs
- * 2. compile sfc into scripts/styles
- */
-async function preCompileDir(dir: string) {
-  const files = await readdir(dir);
-
-  await Promise.all(
-    files.map((filename) => {
-      const filePath = join(dir, filename);
-
-      if (isDemoDir(filePath) || isTestDir(filePath)) {
-        return remove(filePath);
-      }
-      if (isDir(filePath)) {
-        return preCompileDir(filePath);
-      }
-      if (isScript(filePath)) {
-        return compileScript(filePath);
-      }
-      return Promise.resolve();
-    }),
-  );
-}
-
 async function compileDir(dir: string) {
   const files = await readdir(dir);
 
@@ -171,8 +145,8 @@ async function buildBundledOutputs() {
 }
 
 async function build2xResouces() {
-  await copy(ES_DIR, HD_2X_DIR);
-  await copy(ES_DIR, HD_2X_DIR);
+  await copy(ES_DIR, join(HD_2X_DIR, 'dist', 'es'));
+  await copy(ES_DIR, join(HD_2X_DIR, 'dist', 'lib'));
   await copy(PACKAGE_JSON_FILE, join(HD_2X_DIR, 'package.json'));
   const pxMultiplePlugin = postcssMultiple({ times: 2 });
   gulp
@@ -186,8 +160,8 @@ async function build2xResouces() {
 }
 
 async function buildNoStyleResouces() {
-  await copy(ES_DIR, join(NOSTYLE_DIR, 'es'));
-  await copy(ES_DIR, join(NOSTYLE_DIR, 'lib'));
+  await copy(ES_DIR, join(NOSTYLE_DIR, 'dist', 'es'));
+  await copy(ES_DIR, join(NOSTYLE_DIR, 'dist', 'lib'));
   await copy(PACKAGE_JSON_FILE, join(NOSTYLE_DIR, 'package.json'));
   // import "./style/index.css";
   gulp
