@@ -28,9 +28,11 @@ export const GREEN = '#07c160';
 // Root paths
 export const CWD = process.cwd();
 export const ROOT = findRootDir(CWD);
-export const ES_DIR = join(ROOT, 'es');
-export const LIB_DIR = join(ROOT, 'lib');
-export const HD_2X_DIR = join(ROOT, '2x');
+export const PROJECT_DIST = join(ROOT, 'dist');
+export const ES_DIR = join(PROJECT_DIST, 'es');
+export const LIB_DIR = join(PROJECT_DIST, 'lib');
+export const HD_2X_DIR = join(PROJECT_DIST, '2x');
+export const NOSTYLE_DIR = join(PROJECT_DIST, 'patch');
 export const DOCS_DIR = join(ROOT, 'docs');
 export const PACKAGE_JSON_FILE = join(ROOT, 'package.json');
 export const ROOT_WEBPACK_CONFIG_FILE = join(ROOT, 'webpack.config.js');

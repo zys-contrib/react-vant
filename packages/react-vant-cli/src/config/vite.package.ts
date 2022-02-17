@@ -1,7 +1,7 @@
 import { join } from 'path';
 import type { InlineConfig, LibraryFormats } from 'vite';
 import { setBuildTarget } from '../common/index.js';
-import { CWD, ES_DIR, getVantConfig, LIB_DIR } from '../common/constant.js';
+import { PROJECT_DIST, ES_DIR, getVantConfig, LIB_DIR } from '../common/constant.js';
 
 export function getViteConfigForPackage({
   minify,
@@ -17,7 +17,7 @@ export function getViteConfigForPackage({
   const { name } = getVantConfig();
 
   return {
-    root: CWD,
+    root: PROJECT_DIST,
 
     logLevel: 'silent',
 

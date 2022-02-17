@@ -2,6 +2,7 @@ import execa from 'execa';
 import gulp from 'gulp';
 import postcss from 'gulp-postcss';
 import postcssMultiple from 'postcss-px-multiple';
+import gulpReplace from 'gulp-replace';
 import chokidar from 'chokidar';
 import { join, relative } from 'path';
 import fse from 'fs-extra';
@@ -18,7 +19,14 @@ import {
   setNodeEnv,
 } from '../common/index.js';
 import { clean } from './clean.js';
-import { LIB_DIR, ES_DIR, SRC_DIR, HD_2X_DIR, PACKAGE_JSON_FILE } from '../common/constant.js';
+import {
+  LIB_DIR,
+  ES_DIR,
+  SRC_DIR,
+  HD_2X_DIR,
+  PACKAGE_JSON_FILE,
+  NOSTYLE_DIR,
+} from '../common/constant.js';
 import { genStyleDepsMap } from '../compiler/gen-style-deps-map.js';
 import { genPackageEntry } from '../compiler/gen-package-entry.js';
 import { genPackageStyle } from '../compiler/gen-package-style.js';
@@ -163,8 +171,8 @@ async function buildBundledOutputs() {
 }
 
 async function build2xResouces() {
-  await copy(ES_DIR, join(HD_2X_DIR, 'es'));
-  await copy(ES_DIR, join(HD_2X_DIR, 'lib'));
+  await copy(ES_DIR, HD_2X_DIR);
+  await copy(ES_DIR, HD_2X_DIR);
   await copy(PACKAGE_JSON_FILE, join(HD_2X_DIR, 'package.json'));
   const pxMultiplePlugin = postcssMultiple({ times: 2 });
   gulp
@@ -173,6 +181,21 @@ async function build2xResouces() {
     })
     .pipe(postcss([pxMultiplePlugin]))
     .pipe(gulp.dest(HD_2X_DIR), {
+      overwrite: true,
+    });
+}
+
+async function buildNoStyleResouces() {
+  await copy(ES_DIR, join(NOSTYLE_DIR, 'es'));
+  await copy(ES_DIR, join(NOSTYLE_DIR, 'lib'));
+  await copy(PACKAGE_JSON_FILE, join(NOSTYLE_DIR, 'package.json'));
+  // import "./style/index.css";
+  gulp
+    .src(join(NOSTYLE_DIR, '**/**/index.js'), {
+      base: NOSTYLE_DIR,
+    })
+    .pipe(gulpReplace(/import\s"\.\/style\/index\.css";?/g, ''))
+    .pipe(gulp.dest(NOSTYLE_DIR), {
       overwrite: true,
     });
 }
@@ -213,6 +236,10 @@ const tasks = [
   {
     text: 'Build 2x resources',
     task: build2xResouces,
+  },
+  {
+    text: 'Build patch resources',
+    task: buildNoStyleResouces,
   },
 ];
 
