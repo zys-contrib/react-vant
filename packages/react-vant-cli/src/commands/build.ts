@@ -5,6 +5,7 @@ import postcssMultiple from 'postcss-px-multiple';
 import gulpReplace from 'gulp-replace';
 import chokidar from 'chokidar';
 import { join, relative } from 'path';
+import through from 'through2';
 import fse from 'fs-extra';
 import { ora, consola, slimPath } from '../common/logger.js';
 import {
@@ -26,6 +27,7 @@ import {
   HD_2X_DIR,
   PACKAGE_JSON_FILE,
   NOSTYLE_DIR,
+  PROJECT_DIST,
 } from '../common/constant.js';
 import { genStyleDepsMap } from '../compiler/gen-style-deps-map.js';
 import { genPackageEntry } from '../compiler/gen-package-entry.js';
@@ -88,6 +90,26 @@ async function compileDir(dir: string) {
 async function copySourceCode() {
   await copy(SRC_DIR, ES_DIR);
   await copy(SRC_DIR, LIB_DIR);
+  await generatePackageJSON();
+}
+
+async function generatePackageJSON() {
+  gulp
+    .src(PACKAGE_JSON_FILE)
+    .pipe(
+      through.obj((file, enc, cb) => {
+        const rawJSON = file.contents.toString();
+        const parsed = JSON.parse(rawJSON);
+        delete parsed.scripts;
+        delete parsed.devDependencies;
+        delete parsed.publishConfig;
+        delete parsed.files;
+        const stringified = JSON.stringify(parsed, null, 2);
+        file.contents = Buffer.from(stringified);
+        cb(null, file);
+      }),
+    )
+    .pipe(gulp.dest(PROJECT_DIST));
 }
 
 async function buildPackageScriptEntry() {

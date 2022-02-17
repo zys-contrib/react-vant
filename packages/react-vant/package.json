@@ -27,18 +27,18 @@
   "sideEffects": [
     "**/*.css",
     "**/*.less",
-    "./dist/es/index.js",
+    "./es/index.js",
     "./src/index.ts",
-    "./dist/es/styles/index.js",
+    "./es/styles/index.js",
     "./src/styles/index.ts"
   ],
-  "main": "./dist/lib/react-vant.cjs.js",
-  "jsdelivr": "./dist/lib/react-vant.min.js",
-  "unpkg": "./dist/lib/react-vant.min.js",
-  "module": "./dist/es/index.js",
-  "types": "./dist/es/index.d.ts",
-  "typings": "./dist/es/index.d.ts",
-  "style": "./dist/lib/index.css",
+  "main": "./lib/react-vant.cjs.js",
+  "jsdelivr": "./lib/react-vant.min.js",
+  "unpkg": "./lib/react-vant.min.js",
+  "module": "./es/index.js",
+  "types": "./es/index.d.ts",
+  "typings": "./es/index.d.ts",
+  "style": "./lib/index.css",
   "files": [
     "dist"
   ],
@@ -51,6 +51,7 @@
     "prepack": "yarn build",
     "prettier": "npx prettier --write vant.config.js src/index.ts",
     "release": "pnpm publish --tag next",
+    "release:canary": "pnpm publish ./dist --tag canary",
     "release:site": "pnpm run build:site && gh-pages -d site --add",
     "dev": "react-vant-cli dev",
     "test": "react-vant-cli test",
@@ -67,7 +68,8 @@
     "@vant/popperjs": "^1.1.0",
     "clsx": "1.1.1",
     "rc-field-form": "^1.21.2",
-    "react-transition-group": "^4.4.1"
+    "react-transition-group": "^4.4.1",
+    "react-vant": "^2.0.0-alpha.20"
   },
   "devDependencies": {
     "@react-vant/cli": "workspace:*",
